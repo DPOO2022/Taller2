@@ -23,7 +23,7 @@ public class ProductoMenu implements IProducto{
 
 	@Override
 	public int getPrecio() {
-		return 0;
+		return this.precioBase;
 	}
 
 }
