@@ -1,14 +1,21 @@
 package hamburguesas.modelo;
 
 public class Aplicacion {
+	// Atributos
+	
+	private Restaurante restaurante;
 
-	public Aplicacion() {
-		// TODO Auto-generated constructor stub
+	//Métodos
+	public void mostrarMenu() {
+		// TODO
 	}
-
+	
+	public void ejecutarOpcion(){
+		// TODO
+	}
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// TODO 
 
 	}
-
 }

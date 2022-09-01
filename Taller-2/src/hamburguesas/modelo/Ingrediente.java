@@ -3,8 +3,8 @@ package hamburguesas.modelo;
 public class Ingrediente {
 	
 	// Atributos
-	private String nombre="";
-	private int costoAdicional=0;
+	private String nombre;
+	private int costoAdicional;
 
 	
 	// Constructor
@@ -13,7 +13,7 @@ public class Ingrediente {
 		this.costoAdicional=costoAdicional;
 	}
 
-
+	// Métodos
 	public String getNombre() {
 		return nombre;
 	}
