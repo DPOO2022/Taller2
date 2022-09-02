@@ -45,8 +45,11 @@ public class Aplicacion {
 		System.out.println("1. Mostrar Menú");
 		System.out.println("2. Iniciar Nuevo Pedido");
 		System.out.println("3. Agregar Elemento al Pedido");
-		System.out.println("4. Cerrar Un Pedido y Guardar Factura");
-		System.out.println("5. Consultar Infromación Pedido\n");
+		System.out.println("4. Ver Items Pedido En Curso");
+		System.out.println("5. Modificar Item Pedido En Curso");
+		System.out.println("6. Eliminar Item Pedido En Curso");
+		System.out.println("7. Cerrar Un Pedido y Guardar Factura");
+		System.out.println("8. Consultar Infromación Pedido\n");
 		
 	}
 	
@@ -56,7 +59,8 @@ public class Aplicacion {
 		}
 		
 		if(opcion == 2) {
-			if (iniciarPedido()==1) {
+			int error = iniciarPedido();
+			if (error==1) {
 				return;
 			}
 		}
@@ -66,11 +70,47 @@ public class Aplicacion {
 		}
         
         if(opcion == 4) {
-			
+			printItemsPedidoEnCurso();
 		}
         
         if(opcion == 5) {
+			modificarPedido();
+		}
+        
+        if(opcion == 6) {
+			eliminarProducto();
+		}
+        
+        if(opcion == 7) {
+        	
+		}
+        
+        if(opcion == 8) {
 			
+		}
+	}
+	
+	private void modificarPedido() {
+		
+		
+	}
+	
+	private void printItemsPedidoEnCurso() {
+		if (restaurante.getPedidoEnCurso()!=null) {
+			if (restaurante.getPedidoEnCurso().getItemsPedido().get(0) != null) {
+				System.out.println("\nActualmente su pedido cuenta con los siguientes items:\n");
+				String nombre;
+				for(int i = 0; i<restaurante.getPedidoEnCurso().getItemsPedido().size(); i++) {
+					nombre = restaurante.getPedidoEnCurso().getItemsPedido().get(i).getNombre();
+					System.out.println(Integer.toString(i+1) + ". '"+nombre+"'");
+				}
+			}
+			else {
+				System.out.println("\nSu Pedido aun no cuenta con ningún producto, para agregar seleccione la opcion 3 en el menú principal.");
+			}
+		}
+		else {
+			System.out.println("\nNo hay ningún pedido en curso, para iniciar un pedido seleccione la opción 2 en el menú principal");
 		}
 	}
 	
@@ -81,38 +121,53 @@ public class Aplicacion {
 				System.out.println("\nAgregar Producto");
 				mostrarMenu();
 				
-				int numProducto = Integer.parseInt(input("Seleccione el número del producto/combo que desea agregar"));
+				int numProducto = Integer.parseInt(input("\nSeleccione el número del producto/combo que desea agregar"));
 				
 				ejecutarAgregarProducto(numProducto);
 				
-				int numContinuar = Integer.parseInt(input("Para agregar otro producto digite '1', para volver al menú principal digite '0'"));
+				int numContinuar = Integer.parseInt(input("\nPara agregar otro producto digite '1', para volver al menú principal digite '0'"));
 				
-				if (numContinuar != 1) {
+				if (numContinuar == 0) {
 					continuar = false;
 				}
 			}
 		}
 		else {
-			System.out.println("Antes de agregar productos debe iniciar el pedido (opción 2)");
+			System.out.println("\nAntes de agregar productos debe iniciar el pedido (opción 2)");
 			return;
 		}
 	}
-	
+	private void eliminarProducto() {
+		printItemsPedidoEnCurso();
+		String[] itemsEliminar = input("\nSeleccione el número de todos los items que desea eliminar del pedido. \nSi no quiere eliminar ningún producto digite '0'").trim().split(",");
+		if (Integer.parseInt(itemsEliminar[0])!= 0) {
+			ejecutarEliminarProducto(itemsEliminar);
+		}
+		
+	}
+	private void ejecutarEliminarProducto(String[] itemsEliminar) {
+		int pos;
+		for (int i = 0; i < itemsEliminar.length;i++) {
+			pos = Integer.parseInt(itemsEliminar[i]);
+			restaurante.getPedidoEnCurso().eliminarProducto(pos-1);
+		}
+		
+	}
 	private void ejecutarAgregarProducto(int numProducto){
 		if (numProducto > 0 && numProducto<=22) {
 			ProductoMenu productoBase = restaurante.getMenuBase().get(numProducto-1);
 			
-			int numModificar = Integer.parseInt(input("Para agregar o eliminar ingredientes del producto digite '1', de lo contrario digite '0'"));
+			int numModificar = Integer.parseInt(input("\nPara agregar o eliminar ingredientes del producto digite '1'. \nDe lo contrario digite '0'"));
 			
 			if (numModificar == 1) {
 				ProductoAjustado producto;
 				producto = ejecutarModificarProducto(productoBase);
 				restaurante.getPedidoEnCurso().agregarProducto(producto);
-				System.out.println("El producto '"+ producto.getNombre()+"' se ha agregado.");
+				System.out.println("\nEl producto '"+ producto.getNombre()+"' se ha agregado.");
 			}
 			else {
 				restaurante.getPedidoEnCurso().agregarProducto(productoBase);
-				System.out.println("El producto '"+ productoBase.getNombre()+"' se ha agregado.");
+				System.out.println("\nEl producto '"+ productoBase.getNombre()+"' se ha agregado.");
 			}
 			
 		}
@@ -121,26 +176,39 @@ public class Aplicacion {
 			
 			restaurante.getPedidoEnCurso().agregarProducto(combo);
 			
-			System.out.println("El producto '"+ combo.getNombre()+"' se ha agregado.");
+			System.out.println("\nEl producto '"+ combo.getNombre()+"' se ha agregado.");
 		}
 		else {
-			System.out.println("El número del producto no es valido, seleccione otra opción");
+			System.out.println("\nEl número del producto no es valido, seleccione otra opción");
 			return;
 		}
+		
+		
 	}
 	
 	private ProductoAjustado ejecutarModificarProducto(ProductoMenu producto) {
 		ProductoAjustado productoMod = new ProductoAjustado(producto);
 		boolean continuar = true;
+		int numContinuar;
 		
 		while (continuar) {
 			mostrarIngredientes();
 		
-			String[] productosAgregar = input("Seleccione el número de todos los ingredientes que quiere agregar, separados por comas (',')").trim().split(",");
-			String[] productosQuitar = input("Seleccione el número de todos los ingredientes que quiere quitar, separados por comas (',')").trim().split(",");
+			String[] productosAgregar = input("\nSeleccione el número de todos los ingredientes que quiere agregar, separados por comas (','). \nSi no quiere aregar ningún producto digite '0'").trim().split(",");
+			String[] productosQuitar = input("\nSeleccione el número de todos los ingredientes que quiere quitar, separados por comas (','). \nSi no quiere agregar ningún producto digite '0'").trim().split(",");
+			if (Integer.parseInt(productosAgregar[0])!= 0) {
+				ejecutarAgregarIngredientes(productosAgregar, productoMod);
+			}
 			
-			ejecutarAgregarIngredientes(productosAgregar, productoMod);
-			ejecutarEliminarIngredientes(productosQuitar, productoMod);
+			if (Integer.parseInt(productosQuitar[0])!= 0) {
+				ejecutarEliminarIngredientes(productosQuitar, productoMod);
+			}
+			
+			numContinuar = Integer.parseInt(input("\nSi desea hacer otra modificación digite '1', de lo contrario digite '0'"));
+			
+			if (numContinuar == 0) {
+				continuar = false;
+			}
 		}
 		
 		return productoMod;
@@ -170,13 +238,13 @@ public class Aplicacion {
 			
 			ingrediente = restaurante.getIngredientes().get(pos);
 			
-			productoMod.agregarIngrediente(ingrediente);
+			productoMod.eliminarIngrediente(ingrediente);
 			
 		}
 	}
 	
 	private int iniciarPedido(){
-		if (restaurante.getPedidoEnCurso() != null) {
+		if (restaurante.getPedidoEnCurso() == null) {
 			String nombreCliente = input("Ingrese su nombre");
 			String direccion = input("Ingrese su dirección");
 			restaurante.iniciarPedido(nombreCliente, direccion);

@@ -12,6 +12,8 @@ public class ProductoAjustado implements IProducto {
 	// Constructor
 	public ProductoAjustado(ProductoMenu producto) {
 		this.base = producto;
+		this.agregados = new ArrayList<Ingrediente>();
+		this.eliminados = new ArrayList<Ingrediente>();
 	}
 
 
@@ -30,7 +32,7 @@ public class ProductoAjustado implements IProducto {
 
 	public String getNombre() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.base.getNombre();
 	}
 
 	public String generarTextoFactura() {

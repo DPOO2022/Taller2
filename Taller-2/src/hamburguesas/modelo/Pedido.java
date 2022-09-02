@@ -14,7 +14,9 @@ public class Pedido {
 
 	// Constructor
 	public Pedido(String nombreCliente, String direccionCliente) {
-		
+		this.nombreCliente = nombreCliente;
+		this.direccionCliente = direccionCliente;
+		this.itemsPedido = new ArrayList<IProducto>();
 	}
 	
 	// Métodos
@@ -26,8 +28,16 @@ public class Pedido {
 		this.itemsPedido.add(nuevoItem);
 	}
 	
+	public void eliminarProducto(int pos) {
+		this.itemsPedido.remove(pos);
+	}
+	
 	public void guardarFactura(File archivo) {
 		
+	}
+	
+	public ArrayList<IProducto> getItemsPedido(){
+		return this.itemsPedido;
 	}
 	
 	private int getPrecioNetoPedido() {

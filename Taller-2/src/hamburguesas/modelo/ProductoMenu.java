@@ -14,7 +14,7 @@ public class ProductoMenu implements IProducto{
 
 	// Métodos
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 	
 	public String generarTextoFactura() {
