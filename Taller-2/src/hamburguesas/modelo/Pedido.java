@@ -23,7 +23,7 @@ public class Pedido {
 	}
 	
 	public void agregarProducto(IProducto nuevoItem) {
-		
+		this.itemsPedido.add(nuevoItem);
 	}
 	
 	public void guardarFactura(File archivo) {

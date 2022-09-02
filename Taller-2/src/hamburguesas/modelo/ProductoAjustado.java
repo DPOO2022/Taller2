@@ -10,11 +10,19 @@ public class ProductoAjustado implements IProducto {
 	private ProductoMenu base;
 	
 	// Constructor
-	public ProductoAjustado(ProductoMenu base) {
-		// TODO Auto-generated constructor stub
+	public ProductoAjustado(ProductoMenu producto) {
+		this.base = producto;
 	}
 
+
 	// Métodos
+	public void agregarIngrediente(Ingrediente ingrediente) {
+		this.agregados.add(ingrediente);
+		
+	}
+	public void eliminarIngrediente(Ingrediente ingrediente) {
+		this.eliminados.add(ingrediente);
+	}
 	public int getPrecio() {
 		// TODO Auto-generated method stub
 		return 0;

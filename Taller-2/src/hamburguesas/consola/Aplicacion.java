@@ -1,7 +1,9 @@
 package hamburguesas.consola;
 
 import hamburguesas.modelo.Combo;
+import hamburguesas.modelo.IProducto;
 import hamburguesas.modelo.Ingrediente;
+import hamburguesas.modelo.ProductoAjustado;
 import hamburguesas.modelo.ProductoMenu;
 import hamburguesas.modelo.Restaurante;
 
@@ -50,57 +52,17 @@ public class Aplicacion {
 	
 	public void ejecutarOpcion(int opcion){
 		if (opcion == 1) {
-			System.out.println("\nMenu:");
-			
-			ProductoMenu producto;
-			Combo combo;
-			Ingrediente ingrediente;
-			double precioCombo;
-			for(int i = 0; i < restaurante.getMenuBase().size(); i++) {
-				producto = restaurante.getMenuBase().get(i);
-				
-				System.out.println(Integer.toString(i+1) + ". Nombre: " + producto.getNombre() + ", Precio: " + Integer.toString(producto.getPrecio()));
-			}
-			
-			System.out.println("\nCombos:");
-			
-			for(int i = 0; i < restaurante.getCombos().size(); i++) {
-				combo = restaurante.getCombos().get(i);
-				System.out.println(Integer.toString(i+1) + ". Nombre: " + combo.getNombre());
-				System.out.println("	Incluye: ");
-				precioCombo = 0;
-				
-				for (int i1 = 0; i1 < combo.getItemsCombo().size(); i1++) {
-					producto = combo.getItemsCombo().get(i1);
-					System.out.println("		" + producto.getNombre());
-					precioCombo += producto.getPrecio();
-				}
-				
-				System.out.println("	Precio: " + Double.toString(precioCombo) + ", Precio Descuento: " + Double.toString(precioCombo*(1-(combo.getDescuento()/100)))+"\n");
-			}
-			
-			System.out.println("\nIngredientes Adicionales:");
-			
-			for(int i = 0; i < restaurante.getIngredientes().size(); i++) {
-				ingrediente = restaurante.getIngredientes().get(i);
-				System.out.println(Integer.toString(i+1)+". Nombre: " + ingrediente.getNombre() + ", Precio: " + Integer.toString(ingrediente.getCostoAdicional()));
-			}
+			mostrarMenu();
 		}
 		
 		if(opcion == 2) {
-			String nombreCliente = input("Ingrese su nombre");
-			String direccion = input("Ingrese su dirección");
-			restaurante.iniciarPedido(nombreCliente, direccion);
+			if (iniciarPedido()==1) {
+				return;
+			}
 		}
 		
         if(opcion == 2 || opcion == 3) {
-			if (restaurante.getPedidoEnCurso() != null) {
-				
-			}
-			else {
-				System.out.println("Antes de agregar productos debe iniciar el pedido (opción 2)");
-				return;
-			}
+			agregarProducto();
 		}
         
         if(opcion == 4) {
@@ -110,6 +72,174 @@ public class Aplicacion {
         if(opcion == 5) {
 			
 		}
+	}
+	
+	private void agregarProducto(){
+		if (restaurante.getPedidoEnCurso() != null) {
+			boolean continuar = true;
+			while (continuar){
+				System.out.println("\nAgregar Producto");
+				mostrarMenu();
+				
+				int numProducto = Integer.parseInt(input("Seleccione el número del producto/combo que desea agregar"));
+				
+				ejecutarAgregarProducto(numProducto);
+				
+				int numContinuar = Integer.parseInt(input("Para agregar otro producto digite '1', para volver al menú principal digite '0'"));
+				
+				if (numContinuar != 1) {
+					continuar = false;
+				}
+			}
+		}
+		else {
+			System.out.println("Antes de agregar productos debe iniciar el pedido (opción 2)");
+			return;
+		}
+	}
+	
+	private void ejecutarAgregarProducto(int numProducto){
+		if (numProducto > 0 && numProducto<=22) {
+			ProductoMenu productoBase = restaurante.getMenuBase().get(numProducto-1);
+			
+			int numModificar = Integer.parseInt(input("Para agregar o eliminar ingredientes del producto digite '1', de lo contrario digite '0'"));
+			
+			if (numModificar == 1) {
+				ProductoAjustado producto;
+				producto = ejecutarModificarProducto(productoBase);
+				restaurante.getPedidoEnCurso().agregarProducto(producto);
+				System.out.println("El producto '"+ producto.getNombre()+"' se ha agregado.");
+			}
+			else {
+				restaurante.getPedidoEnCurso().agregarProducto(productoBase);
+				System.out.println("El producto '"+ productoBase.getNombre()+"' se ha agregado.");
+			}
+			
+		}
+		else if (numProducto > 22 && numProducto<=26) {
+			Combo combo = restaurante.getCombos().get(numProducto-23);
+			
+			restaurante.getPedidoEnCurso().agregarProducto(combo);
+			
+			System.out.println("El producto '"+ combo.getNombre()+"' se ha agregado.");
+		}
+		else {
+			System.out.println("El número del producto no es valido, seleccione otra opción");
+			return;
+		}
+	}
+	
+	private ProductoAjustado ejecutarModificarProducto(ProductoMenu producto) {
+		ProductoAjustado productoMod = new ProductoAjustado(producto);
+		boolean continuar = true;
+		
+		while (continuar) {
+			mostrarIngredientes();
+		
+			String[] productosAgregar = input("Seleccione el número de todos los ingredientes que quiere agregar, separados por comas (',')").trim().split(",");
+			String[] productosQuitar = input("Seleccione el número de todos los ingredientes que quiere quitar, separados por comas (',')").trim().split(",");
+			
+			ejecutarAgregarIngredientes(productosAgregar, productoMod);
+			ejecutarEliminarIngredientes(productosQuitar, productoMod);
+		}
+		
+		return productoMod;
+		
+	}
+	
+	private void ejecutarAgregarIngredientes(String[] productosAgregar, ProductoAjustado productoMod) {
+		int pos;
+		Ingrediente ingrediente;
+		for(int i = 0; i < productosAgregar.length; i++){
+			
+			pos = Integer.parseInt(productosAgregar[i])-1;
+			
+			ingrediente = restaurante.getIngredientes().get(pos);
+			
+			productoMod.agregarIngrediente(ingrediente);
+			
+		}
+	}
+	
+	private void ejecutarEliminarIngredientes(String[] productosQuitar, ProductoAjustado productoMod) {
+		int pos;
+		Ingrediente ingrediente;
+		for(int i = 0; i < productosQuitar.length; i++){
+			
+			pos = Integer.parseInt(productosQuitar[i])-1;
+			
+			ingrediente = restaurante.getIngredientes().get(pos);
+			
+			productoMod.agregarIngrediente(ingrediente);
+			
+		}
+	}
+	
+	private int iniciarPedido(){
+		if (restaurante.getPedidoEnCurso() != null) {
+			String nombreCliente = input("Ingrese su nombre");
+			String direccion = input("Ingrese su dirección");
+			restaurante.iniciarPedido(nombreCliente, direccion);
+			return 0;
+		}
+		else {
+			System.out.println("\nYa hay un pedido en curso, cierre el pedido antes de crear uno nuevo.");
+			return 1;
+		}
+	}
+	
+	private void mostrarIngredientes() {
+		
+		  System.out.println("\nIngredientes Adicionales:");
+		  Ingrediente ingrediente;
+		  for(int i = 0; i < restaurante.getIngredientes().size(); i++) { 
+			  ingrediente = restaurante.getIngredientes().get(i);
+			  System.out.println(Integer.toString(i+1)+". Nombre: " + ingrediente.getNombre() + ", Precio: " + Integer.toString(ingrediente.getCostoAdicional())); 
+		  }
+		 
+	}
+	
+	private void mostrarMenu() {
+		System.out.println("\nMenu:");
+		
+		IProducto producto;
+		Combo combo;
+		int cont = 1;
+		double precioCombo;
+		for(int i = 0; i < restaurante.getMenuBase().size(); i++) {
+			producto = restaurante.getMenuBase().get(i);
+			
+			System.out.println(Integer.toString(cont) + ". Nombre: " + producto.getNombre() + ", Precio: " + Integer.toString(producto.getPrecio()));
+			cont += 1;
+		}
+		
+		System.out.println("\nCombos:");
+		
+		for(int i = 0; i < restaurante.getCombos().size(); i++) {
+			combo = restaurante.getCombos().get(i);
+			System.out.println(Integer.toString(cont) + ". Nombre: " + combo.getNombre());
+			System.out.println("	Incluye: ");
+			precioCombo = 0;
+			
+			for (int i1 = 0; i1 < combo.getItemsCombo().size(); i1++) {
+				producto = combo.getItemsCombo().get(i1);
+				System.out.println("		" + producto.getNombre());
+				precioCombo += producto.getPrecio();
+			}
+			
+			System.out.println("	Precio: " + Double.toString(precioCombo) + ", Precio Descuento: " + Double.toString(precioCombo*(1-(combo.getDescuento()/100)))+"\n");
+			cont += 1;
+		}
+		
+		/*
+		 * System.out.println("\nIngredientes Adicionales:");
+		 * 
+		 * for(int i = 0; i < restaurante.getIngredientes().size(); i++) { ingrediente =
+		 * restaurante.getIngredientes().get(i);
+		 * System.out.println(Integer.toString(i+1)+". Nombre: " +
+		 * ingrediente.getNombre() + ", Precio: " +
+		 * Integer.toString(ingrediente.getCostoAdicional())); }
+		 */
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
