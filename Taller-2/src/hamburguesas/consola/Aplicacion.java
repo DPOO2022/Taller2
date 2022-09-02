@@ -49,7 +49,7 @@ public class Aplicacion {
 	}
 	
 	public void ejecutarOpcion(int opcion){
-		if (opcion ==1) {
+		if (opcion == 1) {
 			System.out.println("\nMenu:");
 			
 			ProductoMenu producto;
@@ -85,6 +85,30 @@ public class Aplicacion {
 				ingrediente = restaurante.getIngredientes().get(i);
 				System.out.println(Integer.toString(i+1)+". Nombre: " + ingrediente.getNombre() + ", Precio: " + Integer.toString(ingrediente.getCostoAdicional()));
 			}
+		}
+		
+		if(opcion == 2) {
+			String nombreCliente = input("Ingrese su nombre");
+			String direccion = input("Ingrese su dirección");
+			restaurante.iniciarPedido(nombreCliente, direccion);
+		}
+		
+        if(opcion == 2 || opcion == 3) {
+			if (restaurante.getPedidoEnCurso() != null) {
+				
+			}
+			else {
+				System.out.println("Antes de agregar productos debe iniciar el pedido (opción 2)");
+				return;
+			}
+		}
+        
+        if(opcion == 4) {
+			
+		}
+        
+        if(opcion == 5) {
+			
 		}
 	}
 	

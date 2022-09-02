@@ -15,20 +15,19 @@ public class Restaurante {
 	private ArrayList<Combo> combos;
 	private Pedido pedidoEnCurso;
 	
-	// Constructor
+	// Constructores
 	public Restaurante() {
 		pedidos = new ArrayList<Pedido>();
 		combos = new ArrayList<Combo>();
 		menuBase = new ArrayList<ProductoMenu>();
 		ingredientes = new ArrayList<Ingrediente>();
-		
+	}
+	
+	public void iniciarPedido(String nombreCliente, String direccionCliente) {
+		pedidoEnCurso = new Pedido(nombreCliente, direccionCliente);
 	}
 	
 	// Métodos
-	public void iniciarPedido(String nombreCliente, String direccionCliente) {
-		
-	}
-	
 	public void cerrarYGuardarPedido() {
 		
 	}
