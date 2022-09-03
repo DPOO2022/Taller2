@@ -13,7 +13,8 @@ public class Pedido {
 	private ArrayList<IProducto> itemsPedido;
 
 	// Constructor
-	public Pedido(String nombreCliente, String direccionCliente) {
+	public Pedido(int idPedido, String nombreCliente, String direccionCliente) {
+		this.idPedido = idPedido;
 		this.nombreCliente = nombreCliente;
 		this.direccionCliente = direccionCliente;
 		this.itemsPedido = new ArrayList<IProducto>();

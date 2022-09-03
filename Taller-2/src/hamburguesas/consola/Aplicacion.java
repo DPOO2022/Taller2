@@ -82,7 +82,7 @@ public class Aplicacion {
 		}
         
         if(opcion == 7) {
-        	
+        	restaurante.cerrarYGuardarPedido();
 		}
         
         if(opcion == 8) {
@@ -245,9 +245,10 @@ public class Aplicacion {
 	
 	private int iniciarPedido(){
 		if (restaurante.getPedidoEnCurso() == null) {
+			int idPedido = Integer.valueOf(input("Ingrese su id"));
 			String nombreCliente = input("Ingrese su nombre");
 			String direccion = input("Ingrese su dirección");
-			restaurante.iniciarPedido(nombreCliente, direccion);
+			restaurante.iniciarPedido(idPedido, nombreCliente, direccion);
 			return 0;
 		}
 		else {

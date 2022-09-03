@@ -23,15 +23,14 @@ public class Restaurante {
 		ingredientes = new ArrayList<Ingrediente>();
 	}
 	
-	public void iniciarPedido(String nombreCliente, String direccionCliente) {
-		pedidoEnCurso = new Pedido(nombreCliente, direccionCliente);
+	public void iniciarPedido(int idPedido, String nombreCliente, String direccionCliente) {
+		pedidoEnCurso = new Pedido(idPedido, nombreCliente, direccionCliente);
 	}
 	
 	
 	// Métodos
 	
 	public void cerrarYGuardarPedido() {
-		pedidos.add(this.pedidoEnCurso);
 		
 		for(Pedido p: pedidos) {
 			if(p == this.pedidoEnCurso) {
@@ -39,6 +38,7 @@ public class Restaurante {
 				System.out.println("Un pedido igual había sido ordenado por: " + idPedido);
 			}
 		}
+		pedidos.add(this.pedidoEnCurso);
 		pedidoEnCurso = null;
 	}
 	
