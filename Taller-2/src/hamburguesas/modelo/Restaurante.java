@@ -27,9 +27,19 @@ public class Restaurante {
 		pedidoEnCurso = new Pedido(nombreCliente, direccionCliente);
 	}
 	
+	
 	// Métodos
+	
 	public void cerrarYGuardarPedido() {
+		pedidos.add(this.pedidoEnCurso);
 		
+		for(Pedido p: pedidos) {
+			if(p == this.pedidoEnCurso) {
+				String idPedido = String.valueOf(p.getIdPedido());
+				System.out.println("Un pedido igual había sido ordenado por: " + idPedido);
+			}
+		}
+		pedidoEnCurso = null;
 	}
 	
 	
