@@ -31,6 +31,7 @@ public class Restaurante {
 	// Métodos
 	
 	public void cerrarYGuardarPedido() {
+		this.pedidoEnCurso.guardarFactura();
 		
 		for(Pedido p: pedidos) {
 			if(p == this.pedidoEnCurso) {

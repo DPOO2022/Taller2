@@ -1,6 +1,9 @@
 package hamburguesas.modelo;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Pedido {
@@ -33,8 +36,26 @@ public class Pedido {
 		this.itemsPedido.remove(pos);
 	}
 	
-	public void guardarFactura(File archivo) {
+	public void guardarFactura() {
 		
+		String texto = this.generarTectoFactura();
+		File factura = new File("\\src\\data\\factura.txt");
+		FileWriter escribir = null;
+		try {
+			escribir = new FileWriter(factura,true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter linea = new PrintWriter(escribir);
+		linea.println(texto);
+		linea.close();
+		try {
+			escribir.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public ArrayList<IProducto> getItemsPedido(){
@@ -54,6 +75,10 @@ public class Pedido {
 	}
 
 	private String generarTectoFactura() {
-		return "";
+		String texto = "";
+		for(IProducto p: itemsPedido) {
+			texto = texto + p.generarTextoFactura();
+		}
+		return texto;
 	}
 }
