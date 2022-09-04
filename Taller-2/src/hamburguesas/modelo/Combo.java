@@ -45,8 +45,10 @@ public class Combo implements IProducto{
 	}
 
 	public String generarTextoFactura() {
-		// TODO Auto-generated method stub
-		return null;
+		String producto = this.getNombre();
+		String precio = String.valueOf(this.getPrecio());
+		String respuesta = producto + " --- " + precio;
+		return respuesta;
 	}
 
 }
