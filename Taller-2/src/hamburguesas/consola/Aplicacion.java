@@ -91,7 +91,39 @@ public class Aplicacion {
 	}
 	
 	private void modificarPedido() {
+		printItemsPedidoEnCurso();
+		if (restaurante.getPedidoEnCurso()!=null) {
+			int itemMod = Integer.parseInt(input("\nSi desea modificar algún item de su pedido, digite el número de este. \nDe lo contrario digite '0'"));
+			if (itemMod != 0) {
+				boolean continuar = true;
+				while(continuar) {
+					
+					itemMod = Integer.parseInt(input("\nSi desea modificar algún item de su pedido, digite el número de este. \nDe lo contrario digite '0'"));
+					
+					if (itemMod != 0) {
+						ejecutarModificarPedido(itemMod);
+					}
+					else {
+						continuar = false;
+						
+						
+					}
+					
+				}
+			}
+		}
 		
+	}
+	
+	private void ejecutarModificarPedido(int numItem) {
+		IProducto item = restaurante.getPedidoEnCurso().getItemsPedido().get(numItem-1);
+		
+		if (item.getClass() != hamburguesas.modelo.Combo.class) {
+			
+		}
+		else {
+			System.out.println("No se le pueden añadir o quitar elementos al combo.");
+		}
 		
 	}
 	
@@ -106,7 +138,7 @@ public class Aplicacion {
 				}
 			}
 			else {
-				System.out.println("\nSu Pedido aun no cuenta con ningún producto, para agregar seleccione la opcion 3 en el menú principal.");
+				System.out.println("\nSu Pedido aún no cuenta con ningún producto, para agregar seleccione la opcion 3 en el menú principal.");
 			}
 		}
 		else {
@@ -300,15 +332,6 @@ public class Aplicacion {
 			cont += 1;
 		}
 		
-		/*
-		 * System.out.println("\nIngredientes Adicionales:");
-		 * 
-		 * for(int i = 0; i < restaurante.getIngredientes().size(); i++) { ingrediente =
-		 * restaurante.getIngredientes().get(i);
-		 * System.out.println(Integer.toString(i+1)+". Nombre: " +
-		 * ingrediente.getNombre() + ", Precio: " +
-		 * Integer.toString(ingrediente.getCostoAdicional())); }
-		 */
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
