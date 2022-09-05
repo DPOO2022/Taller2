@@ -27,7 +27,11 @@ public class ProductoAjustado implements IProducto {
 	}
 	public int getPrecio() {
 		// TODO Auto-generated method stub
-		return 0;
+		int precioTotal= base.getPrecio();
+		for (int i=0; i<agregados.size();i++) {
+			precioTotal+=agregados.get(i).getCostoAdicional();
+		}
+		return precioTotal;
 	}
 
 	public String getNombre() {

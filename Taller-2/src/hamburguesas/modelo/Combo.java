@@ -29,8 +29,12 @@ public class Combo implements IProducto{
 	}
 	
 	public int getPrecio() {
-		// TODO Auto-generated method stub
-		return 0;
+		int precio=0;
+		for (int i=0; i<itemsCombo.size();i++) {
+			precio = precio + itemsCombo.get(i).getPrecio();
+		}
+		int precioTotal= (int) (precio*descuento);
+		return precioTotal;
 	}
 
 	public String getNombre() {
