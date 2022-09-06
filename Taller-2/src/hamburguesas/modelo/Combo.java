@@ -33,7 +33,7 @@ public class Combo implements IProducto{
 		for (int i=0; i<itemsCombo.size();i++) {
 			precio = precio + itemsCombo.get(i).getPrecio();
 		}
-		int precioTotal= (int) (precio*descuento);
+		int precioTotal= (int) (precio - (precio*(descuento/100)));
 		return precioTotal;
 	}
 
@@ -51,7 +51,7 @@ public class Combo implements IProducto{
 	public String generarTextoFactura() {
 		String producto = this.getNombre();
 		String precio = String.valueOf(this.getPrecio());
-		String respuesta = producto + " --- " + precio;
+		String respuesta = producto + " --- " + precio + " -  ";
 		return respuesta;
 	}
 

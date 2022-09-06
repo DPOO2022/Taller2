@@ -135,7 +135,15 @@ public class Restaurante {
 		}
 		
 		return null;
-		
 	}
-
+	public Pedido buscarProducto(int id) {
+		
+		Pedido respuesta = null;
+		for(Pedido p: pedidos) {
+			if(p.getIdPedido() == id) {
+				respuesta = p;
+			}
+		}
+		return respuesta;
+	}
 }

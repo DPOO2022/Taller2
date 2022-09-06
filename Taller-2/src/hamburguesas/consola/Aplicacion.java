@@ -3,6 +3,7 @@ package hamburguesas.consola;
 import hamburguesas.modelo.Combo;
 import hamburguesas.modelo.IProducto;
 import hamburguesas.modelo.Ingrediente;
+import hamburguesas.modelo.Pedido;
 import hamburguesas.modelo.ProductoAjustado;
 import hamburguesas.modelo.ProductoMenu;
 import hamburguesas.modelo.Restaurante;
@@ -40,7 +41,7 @@ public class Aplicacion {
 	}
 	
 	public void mostrarOpciones() {
-		// TODO
+		
 		System.out.println("\nOpciones de la aplicación\n");
 		System.out.println("1. Mostrar Menú");
 		System.out.println("2. Iniciar Nuevo Pedido");
@@ -50,7 +51,6 @@ public class Aplicacion {
 		System.out.println("6. Eliminar Item Pedido En Curso");
 		System.out.println("7. Cerrar Un Pedido y Guardar Factura");
 		System.out.println("8. Consultar Infromación Pedido\n");
-		
 	}
 	
 	public void ejecutarOpcion(int opcion){
@@ -86,7 +86,21 @@ public class Aplicacion {
 		}
         
         if(opcion == 8) {
-			
+        	int id = Integer.parseInt(input("Digite el id del pedido a buscar"));
+        	ArrayList<String> lista = new ArrayList<String>();
+			Pedido pedido = restaurante.buscarProducto(id);
+			String nombre = pedido.getNombreCliente();
+			String direccion = pedido.getDireccionCliente();
+			ArrayList<IProducto> productos = pedido.getItemsPedido();
+			for(IProducto p: productos) {
+				lista.add(p.getNombre());
+			}
+			System.out.println("El nombre del usuario que realizo el pedido es: " + nombre);
+			System.out.println("El nombre del usuario que realizo el pedido es: " + direccion);
+			System.out.println("Los productos comprados fueron: ");
+			for(String s: lista) {
+				System.out.println(s);
+			}
 		}
 	}
 	

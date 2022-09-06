@@ -26,7 +26,6 @@ public class ProductoAjustado implements IProducto {
 		this.eliminados.add(ingrediente);
 	}
 	public int getPrecio() {
-		// TODO Auto-generated method stub
 		int precioTotal= base.getPrecio();
 		for (int i=0; i<agregados.size();i++) {
 			precioTotal+=agregados.get(i).getCostoAdicional();
@@ -35,15 +34,13 @@ public class ProductoAjustado implements IProducto {
 	}
 
 	public String getNombre() {
-		// TODO Auto-generated method stub
 		return this.base.getNombre();
 	}
 
 	public String generarTextoFactura() {
 		String producto = this.getNombre();
 		String precio = String.valueOf(this.getPrecio());
-		String respuesta = producto + " --- " + precio;
+		String respuesta = producto + " --- " + precio + " -  ";
 		return respuesta;
 	}
-	
 }

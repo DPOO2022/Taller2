@@ -39,7 +39,7 @@ public class Pedido {
 	public void guardarFactura() {
 		
 		String texto = this.generarTectoFactura();
-		File factura = new File("\\src\\data\\factura.txt");
+		File factura = new File("src\\data\\factura.txt");
 		FileWriter escribir = null;
 		try {
 			escribir = new FileWriter(factura,true);
@@ -56,10 +56,6 @@ public class Pedido {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public ArrayList<IProducto> getItemsPedido(){
-		return this.itemsPedido;
 	}
 	
 	private int getPrecioNetoPedido() {
@@ -80,5 +76,28 @@ public class Pedido {
 			texto = texto + p.generarTextoFactura();
 		}
 		return texto;
+	}
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+	public String getDireccionCliente() {
+		return direccionCliente;
+	}
+
+	public void setDireccionCliente(String direccionCliente) {
+		this.direccionCliente = direccionCliente;
+	}
+
+	public void setItemsPedido(ArrayList<IProducto> itemsPedido) {
+		this.itemsPedido = itemsPedido;
+	}
+
+	public ArrayList<IProducto> getItemsPedido(){
+		return this.itemsPedido;
 	}
 }

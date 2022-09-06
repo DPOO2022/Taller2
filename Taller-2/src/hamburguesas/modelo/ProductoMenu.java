@@ -18,7 +18,7 @@ public class ProductoMenu implements IProducto{
 	}
 	
 	public String generarTextoFactura() {
-		return this.nombre +" --- "+ this.precioBase;
+		return this.nombre +" --- "+ this.precioBase + " -  ";
 	}
 
 	@Override
